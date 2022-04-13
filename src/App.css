@@ -1,7 +1,9 @@
 .App {
   text-align: center;
 }
-
+.wrapper {
+  display: flex;
+}
 .App-logo {
   height: 40vmin;
   pointer-events: none;
@@ -36,3 +38,23 @@
     transform: rotate(360deg);
   }
 }
+
+.chatList {
+  align-self: flex-start;
+  justify-self: start;
+  top: 20px;
+  left: 20px;
+  position: absolute;
+  
+}
+.menu {
+  display: flex;
+  
+  
+}
+.menu  li {
+  list-style: none;
+  margin-left: 10px;
+  color: white;
+}
+

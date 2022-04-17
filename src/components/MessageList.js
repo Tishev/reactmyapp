@@ -1,18 +1,65 @@
 import { useParams } from "react-router-dom";
+import {
+  ListItem,
+  List,
+  Divider,
+  ListItemAvatar,
+  ListItemText,
+  Typography,
+  Avatar,
+} from "@mui/material";
+import { AUTHOR } from "../constants/common";
+import { AccountCircle, Android } from "@mui/icons-material";
+import { useSelector } from "react-redux";
 
-const MessageList = ({ chats }) => {
+const MessageList = () => {
+  const allMessages = useSelector((state) => state.messages.MessageList);
+  const { name } = useSelector((state) => state.profile);
   let { chatId } = useParams();
-  if (!chats[chatId]) return null;
-  const messages = chats[chatId].messages;
+
+  if (!allMessages[chatId]) return null;
+  const messages = allMessages[chatId];
+  const isAuthorBot = (author) => {
+    return author === AUTHOR.bot;
+  };
   return (
-    <div>
-      {messages.map((element, index) => (
-        <div key={index}>
-          <p>{element.text}</p>
-          <sup>{element.author}</sup>
-        </div>
-      ))}
-    </div>
+    <>
+      <List sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}>
+        {messages.map((element) => (
+          <div key={element.id}>
+            <ListItem alignItems="flex-start">
+              <ListItemAvatar>
+                <Avatar alt="Remy Sharp">
+                  {isAuthorBot(element.author) ? (
+                    <Android />
+                  ) : (
+                    <AccountCircle />
+                  )}
+                </Avatar>
+              </ListItemAvatar>
+              <ListItemText
+                primary={isAuthorBot(element.author) ? AUTHOR.bot : name}
+                secondary={
+                  <>
+                    <Typography
+                      sx={{ display: "inline" }}
+                      component="span"
+                      variant="body2"
+                      color="text.primary"
+                    >
+                      {element.text}
+                    </Typography>
+                  </>
+                }
+              />
+            </ListItem>
+            <p>{element.text}</p>
+            <sup>{element.author}</sup>
+            <Divider variant="inset" component="li" />
+          </div>
+        ))}
+      </List>
+    </>
   );
 };
 export default MessageList;

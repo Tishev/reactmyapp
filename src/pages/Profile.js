@@ -1,35 +1,43 @@
 import { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { changeVisible } from "../store/profile/actions";
-import * as React from "react";
+import { changeVisible, updateName } from "../store/profile/actions";
+import React from "react";
 
-import Checkbox from "@mui/material/Checkbox";
+import { TextField, Button } from "@mui/material";
 const Profile = () => {
-  const { showName, name } = useSelector((state) => state);
+  const { showName, name } = useSelector((state) => state.profile);
   const dispatch = useDispatch();
+  const [value, setValue] = React.useState(name);
 
   const setShowName = useCallback(() => {
     dispatch(changeVisible);
   }, [dispatch]);
-  const [checked, setChecked] = React.useState(true);
 
-  const handleChange = (event) => {
-    setChecked(event.target.checked);
+  const handleInput = (e) => {
+    setValue(e.target.value);
+  };
+
+  const saveName = () => {
+    dispatch(updateName(value));
   };
   return (
     <div>
       <h1>Profile</h1>
       <button onClick={setShowName}>Show name</button>
-      <Checkbox
-        checked={checked}
-        onChange={handleChange}
-        inputProps={{ "aria-label": "controlled" }}
-      />
+
       <blockquote style={{ height: "40px" }}>
         {showName && <h3>{name}</h3>}
       </blockquote>
+      <TextField
+        placeholder={"Введите ваше имя"}
+        value={value}
+        onChange={handleInput}
+        label={name}
+      />
+      <Button onClick={saveName}>Сoхранить</Button>
     </div>
   );
 };
 
 export default Profile;
+// 22 57

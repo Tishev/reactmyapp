@@ -1,4 +1,3 @@
-import ChatList from "./ChatList";
 import TextField from "@mui/material/TextField";
 import Messages from "./Messages";
 
@@ -7,17 +6,27 @@ import Send from "@mui/icons-material/Send";
 import { useTheme } from "@emotion/react";
 import React, { useEffect, useRef, useState } from "react";
 import { AUTHOR } from "../constants/common";
+import { useDispatch, useSelector } from "react-redux";
+import { addMessage } from "../store/messages/actions";
+import { useParams } from "react-router-dom";
 
 const ControlPanel = () => {
+  let { chatId } = useParams();
   const theme = useTheme();
   const [list, setList] = useState([]);
   const [value, setValue] = useState("");
   const inputRef = useRef(null);
+  const dispatch = useDispatch();
+  const author = useSelector((state) => state.profile.name);
+  const allMessages = useSelector((state) => state.messages.messageList);
+
+  const messages = allMessages[chatId] || [];
+
   const handleClick = (e) => {
     e.preventDefault();
     if (value !== "") {
-      const newMessage = { text: value, author: AUTHOR.me };
-      setList([...list, newMessage]);
+      const newMessage = { text: value, author };
+      dispatch(addMessage(chatId, newMessage));
       setValue("");
       inputRef.current?.focus();
     }
@@ -32,10 +41,13 @@ const ControlPanel = () => {
 
   useEffect(() => {
     let timerId;
-    if (list.length > 0 && list[list.length - 1].author !== AUTHOR.bot) {
+    if (
+      messages?.lenght > 0 &&
+      messages[messages.lenght - 1].author !== AUTHOR.bot
+    ) {
       const newMessage = { text: "Привет, как дела?", author: AUTHOR.bot };
       timerId = setTimeout(() => {
-        setList([...list, newMessage]);
+        dispatch(addMessage(chatId, newMessage));
       }, 1500);
     }
     return () => {
@@ -43,12 +55,9 @@ const ControlPanel = () => {
         clearTimeout(timerId);
       }
     };
-  }, [list]);
+  }, [list, chatId]);
   return (
     <div>
-      <h4>Cписок сообщений: </h4>
-      <Messages messages={list} />
-
       <div className="controlPanel">
         <TextField
           inputRef={inputRef}
@@ -64,4 +73,3 @@ const ControlPanel = () => {
   );
 };
 export default ControlPanel;
-// 21 38

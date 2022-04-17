@@ -20,8 +20,16 @@ const initialChats = {
 };
 
 const Router = () => {
-  const [chats] = useState(initialChats);
-
+  const [chats, setChats] = useState(initialChats);
+  const addMessage = (chatId, message) => {
+    setChats({
+      ...chats,
+      [chatId]: {
+        name: chats[chatId].name,
+        messages: [...chats[chatId].messages, message],
+      },
+    });
+  };
   return (
     <>
       <ul className="menu">
@@ -38,7 +46,13 @@ const Router = () => {
       <Routes>
         <Route path="/" exact element={<Home />} />
         <Route path="/profile" element={<Profile />} />
-        <Route path="/chats/:chatId" element={<Chats />} />
+        <Route path="/chats">
+          <Route index element={<Chats chats={chats} />} />
+          <Route
+            path=":chatId"
+            element={<Chats chats={chats} addMessage={addMessage} />}
+          />
+        </Route>
         <Route path="*" element={<Chats chats={chats} />} />
       </Routes>
     </>

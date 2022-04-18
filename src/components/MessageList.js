@@ -13,15 +13,15 @@ import { AccountCircle, Android } from "@mui/icons-material";
 import { useSelector } from "react-redux";
 
 const MessageList = () => {
-  const allMessages = useSelector((state) => state.messages.MessageList);
+  const allMessages = useSelector((state) => state.messages.messageList);
   const { name } = useSelector((state) => state.profile);
   let { chatId } = useParams();
-
-  if (!allMessages[chatId]) return null;
   const messages = allMessages[chatId];
-  const isAuthorBot = (author) => {
+  if (!allMessages[chatId]) return null;
+
+  function isAuthorBot(author) {
     return author === AUTHOR.bot;
-  };
+  }
   return (
     <>
       <List sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}>

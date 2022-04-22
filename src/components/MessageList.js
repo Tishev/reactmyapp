@@ -16,9 +16,9 @@ const MessageList = () => {
   const allMessages = useSelector((state) => state.messages.messageList);
   const { name } = useSelector((state) => state.profile);
   let { chatId } = useParams();
-  const messages = allMessages[chatId];
-  if (!allMessages[chatId]) return null;
 
+  if (!allMessages[chatId]) return null;
+  const messages = allMessages[chatId];
   function isAuthorBot(author) {
     return author === AUTHOR.bot;
   }

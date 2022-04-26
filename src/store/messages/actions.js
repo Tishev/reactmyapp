@@ -17,7 +17,7 @@ export const addMessageWithThunk =
   (chatId, message) => (dispatch, getState) => {
     dispatch(addMessage(chatId, message));
 
-    if (message.author === AUTHOR.bot) {
+    if (message.author !== AUTHOR.bot) {
       const botMessage = { text: "Привет, как дела?", author: AUTHOR.bot };
       setTimeout(() => dispatch(addMessage(chatId, botMessage)), 1500);
     }

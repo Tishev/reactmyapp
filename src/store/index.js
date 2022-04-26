@@ -9,6 +9,7 @@ import storage from "redux-persist/lib/storage";
 import chatsReducer from "./chats/reducer";
 import messagesReducer from "./messages/reducer";
 import profileReducer from "./profile/reducer";
+import gistsReducer from "./gists/reducer";
 // const sagaMiddleware = createSagaMiddleware();
 
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
@@ -22,6 +23,7 @@ const reducers = combineReducers({
   profile: profileReducer,
   chats: chatsReducer,
   messages: messagesReducer,
+  gists: gistsReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, reducers);

@@ -42,7 +42,7 @@ const ChatList = () => {
   return (
     <div>
       <List>
-        {chats?.lenght > 0 ? (
+        {chats?.length > 0 ? (
           chats.map((chat) => (
             <Link to={`/chats/${chat.id}`} key={chat.id}>
               <ListItem
@@ -55,7 +55,7 @@ const ChatList = () => {
                 <ListItemAvatar>
                   <Avatar />
                 </ListItemAvatar>
-                <ListItemText primary={chats.name} />
+                <ListItemText primary={chat.name} />
               </ListItem>
             </Link>
           ))

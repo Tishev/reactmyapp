@@ -61,3 +61,12 @@
   display: flex;
   flex-direction: column;
 }
+
+.textFildies {
+  padding-top: 30px;
+  display: flex;
+  flex-direction: column;
+}
+.formButton {
+  margin-top: 30px;
+}

@@ -6,8 +6,8 @@ import { useTheme } from "@emotion/react";
 import React, { useEffect, useRef, useState } from "react";
 import { AUTHOR } from "../constants/common";
 import { useDispatch, useSelector } from "react-redux";
-import { addMessageWithThunk } from "../store/messages/actions";
 import { useParams } from "react-router-dom";
+import { addMessageWithFB } from "../middlewares/middleware";
 
 const ControlPanel = () => {
   let { chatId } = useParams();
@@ -23,7 +23,7 @@ const ControlPanel = () => {
     e.preventDefault();
     if (value !== "") {
       const newMessage = { text: value, author: author };
-      dispatch(addMessageWithThunk(chatId, newMessage));
+      dispatch(addMessageWithFB(chatId, newMessage));
       setValue("");
       inputRef.current?.focus();
     }

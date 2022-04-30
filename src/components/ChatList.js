@@ -12,10 +12,14 @@ import {
   Paper,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { addChat } from "../store/chats/actions";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import {
+  addChatWithFB,
+  deleteChatWithFB,
+  initTrackerWithFB,
+} from "../middlewares/middleware";
 
 // Imports end
 const ChatList = () => {
@@ -23,6 +27,7 @@ const ChatList = () => {
   const [visible, setVisible] = useState(false);
   const [chatName, setChatName] = useState("");
   const dispatch = useDispatch();
+  const chatId = useParams();
 
   const handleChatName = (e) => {
     setChatName(e.target.value);
@@ -35,10 +40,18 @@ const ChatList = () => {
     setVisible(true);
   };
   const handleSave = () => {
-    dispatch(addChat(chatName));
+    dispatch(addChatWithFB(chatName));
     setChatName("");
     handleClose();
   };
+
+  const deleteChat = (id) => {
+    dispatch(deleteChatWithFB(id));
+  };
+
+  useEffect(() => {
+    dispatch(initTrackerWithFB());
+  }, [chatId]);
   return (
     <div>
       <List>
@@ -47,7 +60,11 @@ const ChatList = () => {
             <Link to={`/chats/${chat.id}`} key={chat.id}>
               <ListItem
                 secondaryAction={
-                  <IconButton edge="end" aria-label="delete">
+                  <IconButton
+                    edge="end"
+                    aria-label="delete"
+                    onClick={() => deleteChat(chat.id)}
+                  >
                     <DeleteIcon />
                   </IconButton>
                 }
@@ -84,4 +101,3 @@ const ChatList = () => {
   );
 };
 export default ChatList;
-// 1 34 28

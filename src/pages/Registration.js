@@ -2,6 +2,9 @@ import { useState } from "react";
 import { TextField, Button } from "@mui/material";
 import { Link } from "react-router-dom";
 import firebaseConfig from "../services/firebaseConfig";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { ToastContainer, toast } from "react-toastify";
+
 const Registration = () => {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
@@ -18,14 +21,22 @@ const Registration = () => {
     e.preventDefault();
 
     try {
-      await firebaseConfig.auth().cre;
+      const auth = getAuth(firebaseConfig);
+      await createUserWithEmailAndPassword(auth, email, password);
+      toast.success("Регистрция прошла успешно!", {
+        position: toast.POSITION.TOP_CENTER,
+      });
+      setEmail("");
+      setPassword("");
     } catch (e) {
+      toast.error("Ошибка");
       console.error(e);
     }
   };
 
   return (
     <div>
+      <ToastContainer />
       <form className="textFildies" onSubmit={onSubmit}>
         <h1>Регистрация</h1>
         <TextField
@@ -34,6 +45,7 @@ const Registration = () => {
           type="email"
           onChange={handleEmailChange}
           value={email}
+          required
         />
 
         <TextField
@@ -42,6 +54,7 @@ const Registration = () => {
           type="password"
           onChange={handlePasswordChange}
           value={password}
+          required
         />
         <div className="formButton">
           {error && <p>{error}</p>}
@@ -58,3 +71,4 @@ const Registration = () => {
   );
 };
 export default Registration;
+//  1 08 40

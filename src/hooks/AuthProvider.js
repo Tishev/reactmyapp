@@ -10,7 +10,7 @@ import {
 let AuthContext = React.createContext(null);
 
 export function AuthProvider({ children }) {
-  comst[(user, setUser)] = useState();
+  const [user, setUser] = useState();
 
   let signin = async (newUser, callback) => {
     const auth = getAuth(firebaseConfig);

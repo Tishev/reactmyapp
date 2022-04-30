@@ -10,23 +10,32 @@ import {
 } from "@mui/material";
 import { AUTHOR } from "../constants/common";
 import { AccountCircle, Android } from "@mui/icons-material";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { getMessagesByChatIdWithFB } from "../middlewares/middleware";
 
 const MessageList = () => {
   const allMessages = useSelector((state) => state.messages.messageList);
   const { name } = useSelector((state) => state.profile);
+  const dispatch = useDispatch();
   let { chatId } = useParams();
+  useEffect(() => {
+    dispatch(getMessagesByChatIdWithFB(chatId));
+  }, [chatId]);
 
-  if (!allMessages[chatId]) return null;
+  // if (!allMessages[chatId]) return null;
+
   const messages = allMessages[chatId];
+
   function isAuthorBot(author) {
     return author === AUTHOR.bot;
   }
+
   return (
     <>
       <List sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}>
-        {messages.map((element) => (
-          <div key={element.id}>
+        {messages?.map((element, index) => (
+          <div key={index}>
             <ListItem alignItems="flex-start">
               <ListItemAvatar>
                 <Avatar alt="Remy Sharp">
@@ -63,3 +72,4 @@ const MessageList = () => {
   );
 };
 export default MessageList;
+// 22

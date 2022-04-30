@@ -5,6 +5,7 @@ import Home from "./Home";
 import Profile from "./Profile";
 import Login from "./Login";
 import Registration from "./Registration";
+import RequireAuth from "../hocs/RequireAuth";
 
 const Router = () => {
   return (
@@ -31,13 +32,14 @@ const Router = () => {
       </ul>
       <Routes>
         <Route path="/" exact element={<Home />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/gists" element={<Gists />} />
+
         <Route path="/login" element={<Login />} />
         <Route path="/registration" element={<Registration />} />
-        <Route path="/chats">
-          <Route index element={<Chats />} />
-          <Route path=":chatId" element={<Chats />} />
+        <Route element={<RequireAuth />}>
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/gists" element={<Gists />} />
+          {/* <Route index path="/chats:chatId" element={<Chats />} /> */}
+          <Route path="/chats/:chatId" element={<Chats />} />
         </Route>
         <Route path="*" element={<Chats />} />
       </Routes>
